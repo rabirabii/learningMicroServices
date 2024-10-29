@@ -1,0 +1,37 @@
+# Ignore config files
+*.config
+*.json
+
+# Ignore JavaScript folder
+**/js/
+**/javascript/
+**/scripts/
+
+# Ignore Visual Studio files
+.vs/
+
+# Ignore typical .NET files and folders
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# Ignore .NET user-specific files
+.vscode/
+.idea/
+*.user
+*.rsuser
+*.suo
+*.sln.docstates
+
+# Ignore additional folders (if necessary)
+node_modules/
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/js/
+
+# Ignore specific files
+project.lock.json
