@@ -3,15 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductServices", "ProductServices\ProductServices.csproj", "{09D2C7C5-63E0-4955-90FA-4B926A6B57D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductServices", "ProductServices\ProductServices.csproj", "{09D2C7C5-63E0-4955-90FA-4B926A6B57D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderServices", "OrderServices\OrderServices.csproj", "{EB63854A-2CAC-4D18-9A72-F7BF8B995F87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderServices", "OrderServices\OrderServices.csproj", "{EB63854A-2CAC-4D18-9A72-F7BF8B995F87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{5D35B6BC-539E-4E30-9F29-EEB2038CBA62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{5D35B6BC-539E-4E30-9F29-EEB2038CBA62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3E14D8E-0D76-4758-868D-FFB2E036D35C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Global

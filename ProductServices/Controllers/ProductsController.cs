@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace ProductServices.Controllers
 {
@@ -14,8 +15,10 @@ namespace ProductServices.Controllers
 
 
         [HttpGet]
-        public IActionResult Get()
+        //[OutputCache]
+        public async Task<IActionResult> Get()
         {
+            await Task.Delay(5000);
             return Ok(Products);
         }
     }
