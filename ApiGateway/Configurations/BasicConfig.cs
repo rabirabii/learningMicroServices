@@ -1,5 +1,6 @@
-﻿using System.Net.NetworkInformation;
-using Yarp.ReverseProxy.Configuration;
+﻿using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.LoadBalancing;
+using Yarp.ReverseProxy.SessionAffinity;
 
 namespace ApiGateway.Configurations
 {
@@ -9,56 +10,80 @@ namespace ApiGateway.Configurations
         {
             return new[]
             {
-                // Define the first route
                 new RouteConfig
                 {
-                    RouteId = "product-route", // Unique ID for this route
-                    ClusterId = "product-cluster", // This ID is the cluster of this route maps to
+                    RouteId = "product-route",
+                    ClusterId = "product-cluster",
                     Match = new RouteMatch
                     {
-                        Path= "/api/products/{**catch-all}" // URL Path patther for this route(Product)
+                        Path = "/api/products/{**catch-all}"
                     }
                 },
-                //Define Order Route
                 new RouteConfig
                 {
-                    RouteId = "order-route", // Unique ID for this route
-                    ClusterId = "order-cluster", // This ID is the cluster of this route maps to
+                    RouteId = "order-route",
+                    ClusterId = "order-cluster",
                     Match = new RouteMatch
                     {
-                        Path= "/api/orders/{**catch-all}" // URL Path patther for this route(order)
+                        Path = "/api/orders/{**catch-all}"
                     }
                 },
             };
         }
 
-        public static IReadOnlyList<ClusterConfig> GetClusters() 
+        public static IReadOnlyList<ClusterConfig> GetClusters()
         {
             return new[] {
-                // Define the Products Cluster
+               new ClusterConfig
+{
+    ClusterId = "product-cluster",
+
+    SessionAffinity = new SessionAffinityConfig
+    {
+        Enabled = false,
+        Policy = SessionAffinityConstants.Policies.Cookie,
+        FailurePolicy = SessionAffinityConstants.FailurePolicies.Return503Error,
+        AffinityKeyName = "MyAffinityKey" // Menambahkan AffinityKeyName
+    },
+    Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
+    {
+        {
+            "product-destination1", new DestinationConfig()
+            {
+                Address = "https://localhost:5002"
+            }
+        },
+        {
+            "product-destination2", new DestinationConfig()
+            {
+                Address = "https://localhost:5003"
+            }
+        },
+        {
+            "product-destination3", new DestinationConfig()
+            {
+                Address = "https://localhost:5004"
+            }
+        }
+    },
+        LoadBalancingPolicy = LoadBalancingPolicies.RoundRobin,
+},
+
                 new ClusterConfig
                 {
-                    ClusterId = "product-cluster", // Unique ID for the cluster
-                    Destinations =new Dictionary<String, DestinationConfig>
+                    ClusterId = "order-cluster",
+                    LoadBalancingPolicy = LoadBalancingPolicies.RoundRobin,  
+                    Destinations = new Dictionary<string, DestinationConfig>
                     {
                         {
-                            "product-destination" , new DestinationConfig{Address = "https://localhost:5002"}
-                        }
-                    }
-                },
-                    // Define the Order Cluster
-                new ClusterConfig
-                {
-                    ClusterId = "order-cluster", // Unique ID for the cluster
-                    Destinations =new Dictionary<String, DestinationConfig>
-                    {
-                        {
-                            "order-destination" , new DestinationConfig{Address = "https://localhost:5001"}
+                            "order-destination", new DestinationConfig
+                            {
+                                Address = "https://localhost:5001"
+                            }
                         }
                     }
                 }
             };
-        
         }
     }
 }
