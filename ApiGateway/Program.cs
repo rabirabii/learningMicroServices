@@ -1,15 +1,33 @@
 using ApiGateway.Caching;
 using ApiGateway.Configurations;
+using ApiGateway.Services;
+using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddReverseProxy()
-        //.LoadFromConfig(builder.Configuration.GetSection("ApiGateway"));
-        .LoadFromMemory(BasicConfig.GetRoutes(), BasicConfig.GetClusters());
+//builder.Services.AddReverseProxy()
+////        //.LoadFromConfig(builder.Configuration.GetSection("ApiGateway"));
+//        .LoadFromMemory(BasicConfig.GetRoutes(), BasicConfig.GetClusters());
+builder.Services.AddRequestAndResponseService(builder.Configuration);
+
+// Caching
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+
+// Rate Limiter
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("RateLimiterPolicy", opt =>
+    {
+        opt.PermitLimit = 1;
+        opt.Window = TimeSpan.FromSeconds(20);
+        //opt.QueueLimit = 1;
+        //opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+    }).RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
 var app = builder.Build();
 
-
+app.useRRS();
+app.UseRateLimiter();
 app.MapReverseProxy();
 //app.MapReverseProxy(proxypipeline =>
 //{

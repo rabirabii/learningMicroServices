@@ -13,6 +13,7 @@ namespace ApiGateway.Configurations
                 new RouteConfig
                 {
                     RouteId = "product-route",
+                    RateLimiterPolicy = "RateLimiterPolicy",
                     ClusterId = "product-cluster",
                     Match = new RouteMatch
                     {
@@ -22,6 +23,7 @@ namespace ApiGateway.Configurations
                 new RouteConfig
                 {
                     RouteId = "order-route",
+                      RateLimiterPolicy = "RateLimiterPolicy",
                     ClusterId = "order-cluster",
                     Match = new RouteMatch
                     {
